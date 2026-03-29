@@ -80,7 +80,7 @@ export default function ApprovalQueue() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
             <div>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.25rem' }}>{selected.title}</h2>
-              <div style={{ color: 'var(--text-secondary)' }}>Submitted by <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{selected.submitted_by.full_name}</span></div>
+              <div style={{ color: 'var(--text-secondary)' }}>Paid by (Employee): <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{selected.submitted_by.full_name}</span></div>
             </div>
             <button className="btn-icon" onClick={() => setSelected(null)}><X size={16} /></button>
           </div>
@@ -134,7 +134,7 @@ export default function ApprovalQueue() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="form-group">
-              <label className="form-label">Add Comments (Optional)</label>
+              <label className="form-label">Add Remark / Comments (Optional)</label>
               <textarea className="form-input" rows={3} placeholder="Reason for approval/rejection..."
                 value={comments} onChange={(e) => setComments(e.target.value)} />
             </div>

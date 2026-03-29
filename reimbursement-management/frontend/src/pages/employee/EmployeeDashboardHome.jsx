@@ -4,17 +4,26 @@ import { useAuth } from '../../context/AuthContext';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 import { Wallet, Clock, CheckCircle, Plus, FileText, UploadCloud, RefreshCw } from 'lucide-react';
 import ExpenseCard from '../../components/ExpenseCard';
+import AddExpenseModal from '../../components/AddExpenseModal';
 import { Link } from 'react-router-dom';
+import { companyAPI } from '../../services/api';
 
 export default function EmployeeDashboardHome() {
   const { user } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  const [companyCur, setCompanyCur] = useState('USD');
 
-  useEffect(() => {
+  const load = () => {
     expensesAPI.list()
       .then(res => setExpenses(res.data))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    load();
+    companyAPI.get().then(r => setCompanyCur(r.data.currency_code)).catch(() => {});
   }, []);
 
   const stats = {
@@ -35,9 +44,9 @@ export default function EmployeeDashboardHome() {
             Track your expenses and reimbursements
           </p>
         </div>
-        <Link to="/employee/expenses" state={{ openNew: true }} className="btn-primary" style={{ textDecoration: 'none' }}>
+        <button onClick={() => setModal(true)} className="btn-primary" style={{ textDecoration: 'none' }}>
           <Plus size={16} /> New Expense
-        </Link>
+        </button>
       </div>
 
       {/* Stat Cards */}
@@ -100,9 +109,9 @@ export default function EmployeeDashboardHome() {
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)', background: 'var(--bg-card2)', borderRadius: 12 }}>
               <FileText size={32} style={{ margin: '0 auto 0.5rem', opacity: 0.5 }} />
               <p>You haven't submitted any expenses yet</p>
-              <Link to="/employee/expenses" state={{ openNew: true }} className="btn-primary" style={{ marginTop: '1rem' }}>
+              <button onClick={() => setModal(true)} className="btn-primary" style={{ marginTop: '1rem' }}>
                 Create First Expense
-              </Link>
+              </button>
             </div>
           )}
         </div>
@@ -130,6 +139,10 @@ export default function EmployeeDashboardHome() {
           </div>
         </div>
       </div>
+
+      {modal && (
+        <AddExpenseModal onClose={() => setModal(false)} onSave={() => { setModal(false); load(); }} companyCurrency={companyCur} />
+      )}
     </div>
   );
 }

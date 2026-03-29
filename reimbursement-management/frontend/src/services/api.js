@@ -12,9 +12,12 @@ api.interceptors.response.use(
   res => res,
   err => {
     if (err.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Skip redirect if we are actively trying to authenticate
+      if (!err.config.url.includes('/auth/login') && !err.config.url.includes('/auth/signup') && !err.config.url.includes('/auth/firebase-login')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(err);
   }
