@@ -189,11 +189,21 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
   );
 }
 
+import { useLocation } from 'react-router-dom';
+
 export default function MyExpenses() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [companyCur, setCompanyCur] = useState('USD');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.openNew) {
+      setModal(true);
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   const load = () => {
     setLoading(true);

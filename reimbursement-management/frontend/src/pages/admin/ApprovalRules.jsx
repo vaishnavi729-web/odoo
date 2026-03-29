@@ -75,7 +75,8 @@ export default function ApprovalRules() {
       const payload = {
         name: form.name,
         rule_type: form.type,
-        percentage_threshold: form.threshold,
+        percentage_threshold: ['percentage', 'hybrid'].includes(form.type) ? Number(form.threshold) : null,
+        specific_approver_id: ['specific_approver', 'hybrid'].includes(form.type) && form.specific_approver_id ? Number(form.specific_approver_id) : null,
         steps_config: form.steps.map(s => ({
           ...s,
           approver_id: s.approver_role === 'specific_user' ? Number(s.approver_id) : null,
@@ -99,7 +100,7 @@ export default function ApprovalRules() {
           <p style={{ color: 'var(--text-muted)', marginTop: '0.25rem' }}>Configure multi-level workflow rules</p>
         </div>
         <button className="btn-primary" onClick={() => {
-          setForm({ name: '', type: 'sequential', threshold: 100, steps: [{ step_order: 1, approver_role: 'manager' }] });
+          setForm({ name: '', type: 'sequential', threshold: 100, specific_approver_id: '', steps: [{ step_order: 1, approver_role: 'manager' }] });
           setModal(true);
         }}>
           <Plus size={16} /> New Rule
@@ -162,20 +163,59 @@ export default function ApprovalRules() {
 
       {modal && (
         <div className="modal-backdrop">
-          <div className="modal-box glass-card" style={{ maxWidth: 600 }}>
+          <div className="modal-box glass-card" style={{ maxWidth: 640 }}>
             <div className="modal-header">
               <h2 style={{ fontWeight: 700, fontSize: '1.25rem' }}>Create Approval Rule</h2>
               <button className="btn-icon" onClick={() => setModal(false)}><X size={16} /></button>
             </div>
-            <form onSubmit={saveRule} style={{ padding: '1.5rem' }}>
-              <div className="form-group">
-                <label className="form-label">Rule Name</label>
-                <input className="form-input" required placeholder="e.g. Executive Travel Protocol"
-                  value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+            <form onSubmit={saveRule} style={{ padding: '1.5rem', maxHeight: '70vh', overflowY: 'auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label className="form-label">Rule Name</label>
+                  <input className="form-input" required placeholder="e.g. Executive Travel Protocol"
+                    value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                </div>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label className="form-label">Condition Type</label>
+                  <select className="form-input" required value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>
+                    <option value="sequential">Sequential Workflow</option>
+                    <option value="percentage">Percentage Approved (&gt;X%)</option>
+                    <option value="specific_approver">Specific Override Person</option>
+                    <option value="hybrid">Hybrid (Percentage + Override)</option>
+                  </select>
+                </div>
               </div>
 
+              {['percentage', 'hybrid'].includes(form.type) && (
+                <div className="form-group" style={{ padding: '1rem', background: 'var(--bg-dark)', borderRadius: '10px', marginBottom: '1.5rem' }}>
+                  <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <AlertCircle size={14} color="var(--primary)" /> Approval Percentage Threshold (%)
+                  </label>
+                  <input type="number" className="form-input" min="1" max="100" required
+                    value={form.threshold} onChange={e => setForm({ ...form, threshold: e.target.value })} />
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                    If this percentage of the total steps is approved, the entire expense is auto-approved immediately.
+                  </p>
+                </div>
+              )}
+
+              {['specific_approver', 'hybrid'].includes(form.type) && (
+                <div className="form-group" style={{ padding: '1rem', background: 'var(--bg-dark)', borderRadius: '10px', marginBottom: '1.5rem' }}>
+                  <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <CheckCircle size={14} color="var(--success)" /> Specific Person Override
+                  </label>
+                  <select className="form-input" required value={form.specific_approver_id} onChange={e => setForm({ ...form, specific_approver_id: e.target.value })}>
+                    <option value="">Select a user...</option>
+                    {managers.map(m => <option key={m.id} value={m.id}>{m.full_name}</option>)}
+                  </select>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                    If this person approves the expense at any point, the entire expense is auto-approved instantly.
+                  </p>
+                </div>
+              )}
+
               <div style={{ marginTop: '2rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <label className="form-label" style={{ margin: 0 }}>Workflow Steps</label>
+                <label className="form-label" style={{ margin: 0 }}>Workflow Steps (Required)</label>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

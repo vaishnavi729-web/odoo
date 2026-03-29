@@ -39,7 +39,7 @@ export default function AdminDashboardHome() {
       return acc;
     }, {})
   ).map(([name, value]) => ({ name, value: Math.round(value) }))
-   .sort((a, b) => b.value - a.value).slice(0, 6);
+    .sort((a, b) => b.value - a.value).slice(0, 6);
 
   const pieData = [
     { name: 'Pending', value: stats.pending },
@@ -63,25 +63,36 @@ export default function AdminDashboardHome() {
       </div>
 
       {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-        {[
-          { icon: Receipt, label: 'Total Expenses', value: stats.total, color: '#6366f1' },
-          { icon: Clock, label: 'Pending', value: stats.pending, color: '#f59e0b' },
-          { icon: CheckCircle, label: 'Approved', value: stats.approved, color: '#10b981' },
-          { icon: XCircle, label: 'Rejected', value: stats.rejected, color: '#ef4444' },
-          { icon: Users, label: 'Total Users', value: users.length, color: '#8b5cf6' },
-          { icon: DollarSign, label: 'Total Submitted', value: `$${Math.round(stats.totalAmount).toLocaleString()}`, color: '#06b6d4' },
-        ].map(({ icon: Icon, label, value, color }) => (
-          <div key={label} className="stat-card" style={{ cursor: 'default' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: `${color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon size={18} color={color} />
-              </div>
+      <div style={{
+        display: 'flex',
+        gap: '1rem',
+        overflowX: 'auto',
+        marginBottom: '2rem'
+      }}>        {[
+        { icon: Receipt, label: 'Total Expenses', value: stats.total, color: '#6366f1' },
+        { icon: Clock, label: 'Pending', value: stats.pending, color: '#f59e0b' },
+        { icon: CheckCircle, label: 'Approved', value: stats.approved, color: '#10b981' },
+        { icon: XCircle, label: 'Rejected', value: stats.rejected, color: '#ef4444' },
+        { icon: Users, label: 'Total Users', value: users.length, color: '#8b5cf6' },
+        { icon: DollarSign, label: 'Total Submitted', value: `$${Math.round(stats.totalAmount).toLocaleString()}`, color: '#06b6d4' },
+      ].map(({ icon: Icon, label, value, color }) => (
+        <div
+          key={label}
+          className="stat-card"
+          style={{
+            minWidth: '200px',
+            flexShrink: 0,
+            cursor: 'default'
+          }}
+        >          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: `${color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon size={18} color={color} />
             </div>
-            <div style={{ fontSize: '1.875rem', fontWeight: 800, color: 'var(--text-primary)' }}>{value}</div>
           </div>
-        ))}
+          <div style={{ fontSize: '1.875rem', fontWeight: 800, color: 'var(--text-primary)' }}>{value}</div>
+        </div>
+      ))}
       </div>
 
       {/* Charts */}

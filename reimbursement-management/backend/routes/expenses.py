@@ -221,9 +221,37 @@ async def approval_action(
     if payload.action == "approve":
         current_step.status = ApprovalStepStatus.APPROVED
 
-        # Check if all steps done
+        all_steps = expense.approval_steps
+        approved_count = len([s for s in all_steps if s.status == ApprovalStepStatus.APPROVED])
+        total_count = len(all_steps)
+
+        company_rule = db.query(ApprovalRule).filter(
+            ApprovalRule.company_id == current_user.company_id,
+            ApprovalRule.is_active == True
+        ).first()
+
+        auto_approve = False
+        if company_rule:
+            is_specific_approver = company_rule.specific_approver_id == current_user.id
+            percentage = (approved_count / total_count) * 100 if total_count > 0 else 0
+            
+            if company_rule.rule_type == RuleType.SPECIFIC_APPROVER and is_specific_approver:
+                auto_approve = True
+            elif company_rule.rule_type == RuleType.PERCENTAGE and company_rule.percentage_threshold:
+                if percentage >= company_rule.percentage_threshold:
+                    auto_approve = True
+            elif company_rule.rule_type == RuleType.HYBRID:
+                if is_specific_approver or (company_rule.percentage_threshold and percentage >= company_rule.percentage_threshold):
+                    auto_approve = True
+
         remaining = [s for s in expense.approval_steps if s.status == ApprovalStepStatus.PENDING and s.id != current_step.id]
-        if not remaining:
+        
+        if auto_approve:
+            for s in remaining:
+                s.status = ApprovalStepStatus.SKIPPED
+            expense.status = ExpenseStatus.APPROVED
+            log_action = "auto_approved_by_rule"
+        elif not remaining:
             expense.status = ExpenseStatus.APPROVED
             log_action = "approved"
         else:

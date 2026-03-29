@@ -35,7 +35,7 @@ export default function EmployeeDashboardHome() {
             Track your expenses and reimbursements
           </p>
         </div>
-        <Link to="/employee/expenses" className="btn-primary" style={{ textDecoration: 'none' }}>
+        <Link to="/employee/expenses" state={{ openNew: true }} className="btn-primary" style={{ textDecoration: 'none' }}>
           <Plus size={16} /> New Expense
         </Link>
       </div>
@@ -100,7 +100,7 @@ export default function EmployeeDashboardHome() {
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)', background: 'var(--bg-card2)', borderRadius: 12 }}>
               <FileText size={32} style={{ margin: '0 auto 0.5rem', opacity: 0.5 }} />
               <p>You haven't submitted any expenses yet</p>
-              <Link to="/employee/expenses" className="btn-primary" style={{ marginTop: '1rem' }}>
+              <Link to="/employee/expenses" state={{ openNew: true }} className="btn-primary" style={{ marginTop: '1rem' }}>
                 Create First Expense
               </Link>
             </div>
