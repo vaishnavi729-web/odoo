@@ -1,8 +1,8 @@
 fastapi
-uvicorn[standard]
+uvicorn
 sqlalchemy
-python-jose[cryptography]
-passlib[bcrypt]
+python-jose
+passlib
 python-multipart
 httpx
 pillow
@@ -10,4 +10,4 @@ pytesseract
 aiofiles
 python-dotenv
 alembic
-pydantic[email]
+pydantic
