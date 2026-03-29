@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { expensesAPI, ocrAPI, fetchCountries, companyAPI } from '../../services/api';
 import ExpenseCard from '../../components/ExpenseCard';
-import { Plus, UploadCloud, X, Check, Save, Layers, Loader2 } from 'lucide-react';
+import { Plus, UploadCloud, X, Check, Save, Layers, Loader2, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useLocation } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { EXPENSE_CATEGORIES } from '../../utils/constants';
 
@@ -25,7 +26,7 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
         return { name: c.name.common, code };
       }).sort((a, b) => a.name.localeCompare(b.name));
       setCountries(sorted);
-    }).catch(() => {});
+    }).catch(() => { });
   }, []);
 
   const onDrop = useCallback(async (acceptedFiles) => {
@@ -37,14 +38,14 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
 
     const formData = new FormData();
     formData.append('file', file);
-    
+
     try {
       const res = await ocrAPI.extract(formData);
       if (res.data.success && res.data.data) {
         const { amount, merchant_name, description } = res.data.data;
         let date = form.expense_date;
-        
-        try { if(res.data.data.date) date = new Date(res.data.data.date).toISOString().split('T')[0]; } catch {}
+
+        try { if (res.data.data.date) date = new Date(res.data.data.date).toISOString().split('T')[0]; } catch { }
 
         setForm(f => ({
           ...f,
@@ -64,7 +65,7 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
     setOcrLoading(false);
   }, [form.expense_date]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {'image/*': ['.jpeg', '.png', '.jpg']} });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: { 'image/*': ['.jpeg', '.png', '.jpg'] } });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,7 +98,7 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
             <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
               <Layers size={16} color="var(--primary)" /> 1. Upload Receipt
             </h3>
-            
+
             <div {...getRootProps()} className={`upload-zone ${isDragActive ? 'drag-over' : ''}`} style={{ marginBottom: '1rem' }}>
               <input {...getInputProps()} />
               {ocrLoading ? (
@@ -189,8 +190,6 @@ function AddExpenseModal({ onClose, onSave, companyCurrency }) {
   );
 }
 
-import { useLocation } from 'react-router-dom';
-
 export default function MyExpenses() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -214,7 +213,7 @@ export default function MyExpenses() {
 
   useEffect(() => {
     load();
-    companyAPI.get().then(r => setCompanyCur(r.data.currency_code)).catch(() => {});
+    companyAPI.get().then(r => setCompanyCur(r.data.currency_code)).catch(() => { });
   }, []);
 
   const handleDelete = async (id, e) => {
@@ -243,17 +242,17 @@ export default function MyExpenses() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
         {loading ? (
-             Array(4).fill(0).map((_, i) => <div key={i} className="skeleton" style={{ height: 160, borderRadius: 16 }} />)
+          Array(4).fill(0).map((_, i) => <div key={i} className="skeleton" style={{ height: 160, borderRadius: 16 }} />)
         ) : expenses.length ? (
           expenses.map(ex => (
             <div key={ex.id} style={{ position: 'relative' }}>
-               <ExpenseCard expense={ex} />
-               {ex.status === 'pending' && (
-                 <button className="btn-icon" onClick={(e) => handleDelete(ex.id, e)}
-                   style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--bg-dark)', width: 28, height: 28 }}>
-                   <X size={14} color="var(--danger)" />
-                 </button>
-               )}
+              <ExpenseCard expense={ex} />
+              {ex.status === 'pending' && (
+                <button className="btn-icon" onClick={(e) => handleDelete(ex.id, e)}
+                  style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--bg-dark)', width: 28, height: 28 }}>
+                  <X size={14} color="var(--danger)" />
+                </button>
+              )}
             </div>
           ))
         ) : (
