@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from config.database import engine, Base
+from models import models
 from routes import auth, users, expenses, rules, ocr, company
 
 # Create all tables

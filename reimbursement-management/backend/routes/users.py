@@ -89,5 +89,5 @@ async def get_managers(
 ):
     return db.query(User).filter(
         User.company_id == current_user.company_id,
-        User.role.in_([UserRole.MANAGER, UserRole.DIRECTOR, UserRole.ADMIN])
+        User.role.in_([UserRole.MANAGER, UserRole.ADMIN])
     ).all()

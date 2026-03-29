@@ -23,8 +23,7 @@ export default function ApprovalQueue() {
           if (!pending.length) return false;
           const currentStep = pending.reduce((min, s) => s.step_order < min.step_order ? s : min, pending[0]);
           if (currentStep.approver_id === user.id) return true;
-          if (!currentStep.approver_id && currentStep.approver_role === 'manager' && e.submitted_by.manager_id === user.id) return true;
-          if (!currentStep.approver_id && currentStep.approver_role === 'director' && user.role === 'director') return true;
+          if (!currentStep.approver_id && currentStep.approver_role === 'director' && e.submitted_by.director_id === user.id) return true;
           if (!currentStep.approver_id && currentStep.approver_role === 'admin' && user.role === 'admin') return true;
           return false;
         });

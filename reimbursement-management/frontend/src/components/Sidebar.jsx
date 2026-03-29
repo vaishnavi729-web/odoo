@@ -21,11 +21,6 @@ const NAV_ITEMS = {
     { to: '/manager/approvals', icon: CheckSquare, label: 'Approval Queue' },
     { to: '/manager/expenses', icon: Receipt, label: 'Team Expenses' },
   ],
-  director: [
-    { to: '/director', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/director/approvals', icon: CheckSquare, label: 'Approval Queue' },
-    { to: '/director/expenses', icon: Receipt, label: 'Team Expenses' },
-  ],
   employee: [
     { to: '/employee', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/employee/expenses', icon: Receipt, label: 'My Expenses' },
@@ -74,7 +69,7 @@ export default function Sidebar() {
           <NavLink
             key={to}
             to={to}
-            end={to === '/admin' || to === '/manager' || to === '/director' || to === '/employee'}
+            end={to === '/admin' || to === '/manager' || to === '/employee'}
             className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
           >
             <Icon size={18} />

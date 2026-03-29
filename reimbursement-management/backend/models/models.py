@@ -8,7 +8,6 @@ from config.database import Base
 class UserRole(str, enum.Enum):
     ADMIN = "admin"
     MANAGER = "manager"
-    DIRECTOR = "director"
     EMPLOYEE = "employee"
 
 
@@ -56,7 +55,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     full_name = Column(String, nullable=False)
     hashed_password = Column(String, nullable=True)
-    role = Column(String, default="employee")
+    role = Column(SAEnum(UserRole), default=UserRole.EMPLOYEE)
     company_id = Column(Integer, ForeignKey("companies.id"))
     manager_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     is_active = Column(Boolean, default=True)

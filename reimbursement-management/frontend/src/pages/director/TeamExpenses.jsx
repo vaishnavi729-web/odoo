@@ -21,10 +21,10 @@ export default function TeamExpenses() {
       expensesAPI.list({ status: statusFilter }),
       usersAPI.list()
     ]).then(([eRes, uRes]) => {
-      // Direct reports (those who have this user as manager)
-      const teamMates = uRes.data.filter(u => u.manager_id === user.id);
+      const teamMates = uRes.data.filter(u => u.director_id === user.id);
       setTeam(teamMates);
-      setExpenses(eRes.data);
+      // Filter expenses belonging to team members
+      setExpenses(eRes.data.filter(e => teamMates.some(t => t.id === e.submitted_by_id)));
     }).finally(() => setLoading(false));
   }, [statusFilter]);
 

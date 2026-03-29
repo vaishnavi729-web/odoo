@@ -138,7 +138,7 @@ export default function ApprovalRules() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)'
                     }}>{s.step_order}</div>
                     <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)' }}>
-                      {s.approver_role === 'manager' ? 'Direct Manager' : s.approver_role === 'admin' ? 'Any Admin' : s.approver_role === 'director' ? 'Any Director' : 'Specific Appover'}
+                      {s.approver_role === 'manager' ? 'Direct Manager' : s.approver_role === 'admin' ? 'Any Admin' : 'Specific Appover'}
                     </div>
                   </div>
                 ))}
@@ -231,7 +231,6 @@ export default function ApprovalRules() {
                       onChange={e => updateStep(idx, 'approver_role', e.target.value)}
                     >
                       <option value="manager">Direct Manager</option>
-                      <option value="director">Any Director</option>
                       <option value="admin">Any Admin</option>
                       <option value="specific_user">Specific User</option>
                     </select>

@@ -153,7 +153,7 @@ async def list_expenses(
 
     if current_user.role == UserRole.EMPLOYEE:
         query = query.filter(Expense.submitted_by_id == current_user.id)
-    elif current_user.role in [UserRole.MANAGER, UserRole.DIRECTOR]:
+    elif current_user.role == UserRole.MANAGER:
         subordinate_ids = [u.id for u in current_user.subordinates]
         subordinate_ids.append(current_user.id)
         query = query.filter(Expense.submitted_by_id.in_(subordinate_ids))

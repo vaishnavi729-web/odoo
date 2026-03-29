@@ -7,7 +7,7 @@ import StatusBadge from '../../components/StatusBadge';
 import ExpenseCard from '../../components/ExpenseCard';
 import { Link } from 'react-router-dom';
 
-export default function DirectorDashboardHome() {
+export default function directorDashboardHome() {
   const { user } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [users, setUsers] = useState([]);
@@ -17,8 +17,7 @@ export default function DirectorDashboardHome() {
     Promise.all([expensesAPI.list(), usersAPI.list()])
       .then(([expRes, usRes]) => {
         setExpenses(expRes.data);
-        // Direct reports (those who have this user as manager)
-        setUsers(usRes.data.filter(u => u.manager_id === user.id));
+        setUsers(usRes.data.filter(u => u.director_id === user.id));
       })
       .finally(() => setLoading(false));
   }, []);

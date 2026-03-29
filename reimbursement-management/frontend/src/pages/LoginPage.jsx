@@ -18,7 +18,6 @@ export default function LoginPage() {
 
   const getDashboard = (role) => {
     if (role === 'admin') return '/admin';
-    if (role === 'director') return '/director';
     if (role === 'manager') return '/manager';
     return '/employee';
   };

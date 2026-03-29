@@ -87,14 +87,13 @@ export function AuthProvider({ children }) {
 
   const isAdmin = user?.role === 'admin';
   const isManager = user?.role === 'manager';
-  const isDirector = user?.role === 'director';
   const isEmployee = user?.role === 'employee';
 
   return (
     <AuthContext.Provider value={{
       user, loading, initialized,
       signup, login, loginWithGoogle, logout, refreshUser,
-      isAdmin, isManager, isDirector, isEmployee,
+      isAdmin, isManager, isEmployee,
     }}>
       {children}
     </AuthContext.Provider>

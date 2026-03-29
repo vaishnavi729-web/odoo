@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { expensesAPI, companyAPI } from '../../services/api';
+import { expensesAPI, ocrAPI, fetchCountries, companyAPI } from '../../services/api';
 import ExpenseCard from '../../components/ExpenseCard';
-import AddExpenseModal from '../../components/AddExpenseModal';
 import { Plus, X, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
+import AddExpenseModal from '../../components/AddExpenseModal';
 import { useLocation } from 'react-router-dom';
 
 export default function MyExpenses() {
@@ -12,7 +12,6 @@ export default function MyExpenses() {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [companyCur, setCompanyCur] = useState('USD');
-  const { user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -25,10 +24,7 @@ export default function MyExpenses() {
   const load = () => {
     setLoading(true);
     expensesAPI.list()
-      .then(res => {
-        // Only show my own expenses
-        setExpenses(res.data.filter(e => e.submitted_by_id === user.id));
-      })
+      .then(res => setExpenses(res.data))
       .finally(() => setLoading(false));
   };
 

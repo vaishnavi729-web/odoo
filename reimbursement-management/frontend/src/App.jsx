@@ -6,7 +6,6 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import ManagerLayout from './pages/manager/ManagerLayout';
-import DirectorLayout from './pages/director/DirectorLayout';
 import EmployeeLayout from './pages/employee/EmployeeLayout';
 
 // Protected Route Wrapper
@@ -17,7 +16,6 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   if (!user) return <Navigate to="/login" replace />;
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     if (user.role === 'admin') return <Navigate to="/admin" replace />;
-    if (user.role === 'director') return <Navigate to="/director" replace />;
     if (user.role === 'manager') return <Navigate to="/manager" replace />;
     return <Navigate to="/employee" replace />;
   }
@@ -45,14 +43,8 @@ function AppRoutes() {
         </ProtectedRoute>
       } />
 
-      <Route path="/director/*" element={
-        <ProtectedRoute allowedRoles={['director', 'admin']}>
-          <DirectorLayout />
-        </ProtectedRoute>
-      } />
-
       <Route path="/employee/*" element={
-        <ProtectedRoute allowedRoles={['employee', 'manager', 'director', 'admin']}>
+        <ProtectedRoute allowedRoles={['employee', 'manager', 'admin']}>
           <EmployeeLayout />
         </ProtectedRoute>
       } />
