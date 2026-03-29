@@ -5,7 +5,7 @@ import { UserPlus, Edit2, Trash2, Search, X, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { EXPENSE_CATEGORIES } from '../../utils/constants';
 
-const ROLES = ['employee', 'manager'];
+const ROLES = ['employee', 'manager', 'director', 'admin'];
 const DEPARTMENTS = ['Engineering', 'Finance', 'Marketing', 'HR', 'Sales', 'Operations', 'Legal', 'Other'];
 
 function UserModal({ user, managers, onClose, onSave }) {
@@ -106,7 +106,7 @@ export default function UserManagement() {
   };
   useEffect(load, []);
 
-  const managers = users.filter(u => u.role === 'manager' || u.role === 'admin');
+  const managers = users.filter(u => u.role === 'manager' || u.role === 'director' || u.role === 'admin');
   const filtered = users.filter(u => {
     const q = search.toLowerCase();
     return (
@@ -150,6 +150,7 @@ export default function UserManagement() {
         <select className="form-input" style={{ width: 150 }} value={roleFilter} onChange={e => setRoleFilter(e.target.value)}>
           <option value="">All Roles</option>
           <option value="admin">Admin</option>
+          <option value="director">Director</option>
           <option value="manager">Manager</option>
           <option value="employee">Employee</option>
         </select>

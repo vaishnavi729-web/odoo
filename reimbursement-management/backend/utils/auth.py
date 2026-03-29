@@ -60,6 +60,6 @@ def require_admin(current_user: User = Depends(get_current_user)):
 
 
 def require_manager_or_admin(current_user: User = Depends(get_current_user)):
-    if current_user.role.value not in ("admin", "manager"):
-        raise HTTPException(status_code=403, detail="Manager or Admin access required")
+    if current_user.role.value not in ("admin", "manager", "director"):
+        raise HTTPException(status_code=403, detail="Manager, Director or Admin access required")
     return current_user
