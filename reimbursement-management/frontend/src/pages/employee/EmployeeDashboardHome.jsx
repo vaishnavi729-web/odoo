@@ -115,29 +115,6 @@ export default function EmployeeDashboardHome() {
             </div>
           )}
         </div>
-
-        {/* Quick Actions / Info */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div className="glass-card" style={{ padding: '1.5rem', background: 'radial-gradient(circle at top right, rgba(99,102,241,0.1), transparent 70%), var(--bg-card)' }}>
-            <h3 style={{ fontWeight: 700, fontSize: '1.0625rem', marginBottom: '0.75rem' }}>Quick Tip</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              Upload your receipt securely and our OCR AI will automatically extract the amount, date, and merchant information for you.
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600, fontSize: '0.8125rem' }}>
-              <UploadCloud size={16} /> Auto-fill with AI
-            </div>
-          </div>
-          
-          <div className="glass-card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontWeight: 700, fontSize: '1.0625rem', marginBottom: '0.75rem' }}>Exchange Rates</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              Traveling abroad? Submit your expenses in the local currency. We'll automatically convert it to your company's base currency using live rates.
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600, fontSize: '0.8125rem' }}>
-              <RefreshCw size={16} /> Live Conversion
-            </div>
-          </div>
-        </div>
       </div>
 
       {modal && (
