@@ -1,4 +1,4 @@
-# 🚀 Reimbursement Management System
+# Reimbursement Management System
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
@@ -9,14 +9,14 @@ A full-stack, AI-powered system for managing corporate expense reimbursements. F
 
 ---
 
-## 🚩 Problem Statement
+##  Problem Statement
 Companies often struggle with manual expense reimbursement processes that are **time-consuming, error-prone, and lack transparency**. Traditional systems lack simple ways to:
 *   Define approval flows based on custom thresholds.
 *   Manage complex multi-level approval hierarchies.
 *   Support flexible approval rules (e.g., specific CFO override).
 *   Automate receipt data entry via AI.
 
-## 🌟 Key Features
+##  Key Features
 
 ### Authentication & User Management
 * **Firebase Authentication**: Support for secure Email/Password and Google OAuth sign-in.
@@ -48,7 +48,7 @@ Instead of enforcing rigid hierarchies, admins can define **Conditional Approval
 
 ---
 
-## 🛡 Role Permissions Matrix
+##  Role Permissions Matrix
 
 | Role | Permissions |
 | :--- | :--- |
@@ -71,12 +71,12 @@ Instead of enforcing rigid hierarchies, admins can define **Conditional Approval
 * **Modern Dashboard Aesthetics**: Built with a sleek data-heavy interface using React and modern CSS variables. Includes dedicated queues, intuitive Drag & Drop areas, and visual timelines.
 * **Data Visualization**: Quick statistical metrics and tracking indicators designed in standard SaaS architecture patterns.
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 **Frontend:** React (Vite), Tailwind CSS, React Router DOM, Axios, Recharts, Firebase Auth
 **Backend:** Python / FastAPI, SQLite, SQLAlchemy, Pytesseract, PassLib (pbkdf2_sha256)
 
-## 🚀 Setting Up the Project
+##  Setting Up the Project
 
 ### 1. Setup Backend
 ```bash
